@@ -1,0 +1,22 @@
+{
+  "name": "stacktrace-metadata",
+  "version": "0.1.0",
+  "description": "Modify given `err` object to be more useful.",
+  "repository": "tunnckoCore/stacktrace-metadata",
+  "author": "Charlike Mike Reagent <@tunnckoCore> (http://www.tunnckocore.tk)",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "standard && node test.js"
+  },
+  "dependencies": {
+    "is-typeof-error": "^1.0.1"
+  },
+  "devDependencies": {
+    "assertit": "^0.1.0"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": []
+}
