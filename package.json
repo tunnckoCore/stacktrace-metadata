@@ -1,6 +1,6 @@
 {
   "name": "stacktrace-metadata",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Modify given `err` object to be more useful. Adds `line`, `column` and `filename` properties.",
   "repository": "tunnckoCore/stacktrace-metadata",
   "author": "Charlike Mike Reagent <@tunnckoCore> (http://www.tunnckocore.tk)",
