@@ -14,8 +14,30 @@ npm i stacktrace-metadata --save
 ## Usage
 > For more use-cases see the [tests](./test.js)
 
+**example.js**
+
 ```js
-const stacktraceMetadata = require('stacktrace-metadata')
+'use strict'
+
+var assert = require('assert')
+var metadata = require('stacktrace-metadata')
+
+function foobar (val) {
+  assert.equal(val, true)
+  return val
+}
+
+try {
+  foobar(1234)
+} catch (err) {
+  var e = metadata(err)
+  console.log(e) // => AssertionError
+  console.log(e.line) // => 7
+  console.log(e.column) // => 10
+  console.log(e.actual) // => 1234
+  console.log(e.expected) // => true
+  console.log(e.message) // => '1234 == true'
+}
 ```
 
 
