@@ -1,7 +1,7 @@
 /*!
  * stacktrace-metadata <https://github.com/tunnckoCore/stacktrace-metadata>
  *
- * Copyright (c) 2015 Charlike Mike Reagent <@tunnckoCore> (http://www.tunnckocore.tk)
+ * Copyright (c) 2015-2016 Charlike Mike Reagent <@tunnckoCore> (http://www.tunnckocore.tk)
  * Released under the MIT license.
  */
 
@@ -13,7 +13,7 @@ module.exports = function stacktraceMetadata (err) {
   if (!isError(err)) {
     throw new TypeError('stacktrace-metadata: expect `err` to be error object')
   }
-  if (err && err.stack && err.stack.length > 0) {
+  if (typeof err.stack === 'string' && err.stack.length) {
     var filename = cameFrom(module.parent)
     var stack = err.stack
     stack = stack.slice(stack.indexOf(filename))
@@ -29,6 +29,8 @@ module.exports = function stacktraceMetadata (err) {
 }
 
 function cameFrom (mod) {
+  // rare cases
+  /* istanbul ignore next */
   if (mod && mod.parent) {
     return cameFrom(mod.parent)
   }

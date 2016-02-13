@@ -1,6 +1,6 @@
 # [stacktrace-metadata][author-www-url] [![npmjs.com][npmjs-img]][npmjs-url] [![The MIT License][license-img]][license-url] 
 
-> Modify given `err` object to be more useful.
+> Modify given `err` object to be more useful. Adds `line`, `column` and `filename` properties.
 
 [![code climate][codeclimate-img]][codeclimate-url] [![standard code style][standard-img]][standard-url] [![travis build status][travis-img]][travis-url] [![coverage status][coveralls-img]][coveralls-url] [![dependency status][david-img]][david-url]
 
@@ -15,7 +15,7 @@ npm i stacktrace-metadata --save
 > For more use-cases see the [tests](./test.js)
 
 ```js
-var stacktraceMetadata = require('stacktrace-metadata')
+const stacktraceMetadata = require('stacktrace-metadata')
 ```
 
 
@@ -32,7 +32,7 @@ But before doing anything, please read the [CONTRIBUTING.md](./CONTRIBUTING.md) 
 [npmjs-url]: https://www.npmjs.com/package/stacktrace-metadata
 [npmjs-img]: https://img.shields.io/npm/v/stacktrace-metadata.svg?label=stacktrace-metadata
 
-[license-url]: https://github.com/tunnckoCore/stacktrace-metadata/blob/master/LICENSE.md
+[license-url]: https://github.com/tunnckoCore/stacktrace-metadata/blob/master/LICENSE
 [license-img]: https://img.shields.io/badge/license-MIT-blue.svg
 
 

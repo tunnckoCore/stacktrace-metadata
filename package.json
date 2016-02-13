@@ -1,9 +1,10 @@
 {
   "name": "stacktrace-metadata",
   "version": "0.1.0",
-  "description": "Modify given `err` object to be more useful.",
+  "description": "Modify given `err` object to be more useful. Adds `line`, `column` and `filename` properties.",
   "repository": "tunnckoCore/stacktrace-metadata",
   "author": "Charlike Mike Reagent <@tunnckoCore> (http://www.tunnckocore.tk)",
+  "precommit.silent": true,
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -13,10 +14,32 @@
     "is-typeof-error": "^1.0.1"
   },
   "devDependencies": {
-    "assertit": "^0.1.0"
+    "assertit": "^0.1.0",
+    "pre-commit": "*"
   },
   "files": [
     "index.js"
   ],
-  "keywords": []
+  "keywords": [
+    "assert",
+    "check",
+    "column",
+    "data",
+    "err",
+    "error",
+    "errors",
+    "file",
+    "filename",
+    "kind",
+    "kindof",
+    "line",
+    "meta",
+    "metadata",
+    "stack",
+    "stacktrace",
+    "stacktrace-metadata",
+    "type",
+    "typeof",
+    "useful"
+  ]
 }
