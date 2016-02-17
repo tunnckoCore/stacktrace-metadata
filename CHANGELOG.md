@@ -1,5 +1,9 @@
 
 
+## 1.0.1 - 2016-02-17
+- Release v1.0.1 / npm@v1.0.1
+- update deps
+
 ## 1.0.0 - 2016-02-13
 - Release v1.0.0 / npm@v1.0.0
 - official v1 release, stable forever
