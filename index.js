@@ -1,38 +1,62 @@
 /*!
  * stacktrace-metadata <https://github.com/tunnckoCore/stacktrace-metadata>
  *
- * Copyright (c) 2015-2016 Charlike Mike Reagent <@tunnckoCore> (http://www.tunnckocore.tk)
+ * Copyright (c) Charlike Mike Reagent <@tunnckoCore> (https://i.am.charlike.online)
  * Released under the MIT license.
  */
 
 'use strict'
 
-var isError = require('is-typeof-error')
+var extend = require('extend-shallow')
+var clean = require('clean-stacktrace')
+var metadata = require('clean-stacktrace-metadata')
+var relative = require('clean-stacktrace-relative-paths')
 
-module.exports = function stacktraceMetadata (err) {
-  if (!isError(err)) {
-    throw new TypeError('stacktrace-metadata: expect `err` to be error object')
+module.exports = function stacktraceMetadata (error, options) {
+  if (!(error instanceof Error)) {
+    throw new TypeError('stacktrace-metadata: expect `error` to be real error')
   }
-  if (typeof err.stack === 'string' && err.stack.length) {
-    var filename = cameFrom(module.parent)
-    var stack = err.stack
-    stack = stack.slice(stack.indexOf(filename))
-    stack = stack.slice(0, stack.indexOf('\n') - 1)
-    var matches = stack.match(/([^:\s]+):(\d+)(?::(\d+))$/)
-    if (matches) {
-      err.filename = matches[1]
-      err.line = Number(matches[2])
-      err.column = Number(matches[3])
+
+  if (typeof error.stack === 'string' && error.stack.length) {
+    var opts = extend({
+      showStack: true,
+      shortStack: true,
+      cleanStack: true,
+      relativePaths: true
+    }, options)
+
+    var relativePaths = opts.relativePaths
+      ? relative(opts.cwd)
+      : function (line) { return line }
+
+    var stack = clean(error.stack, function mapper (line, index) {
+      // hint: use `parent-module` package
+      // and `line.indexOf(parentModule())`
+      // if not works correctly
+
+      line = relativePaths(line)
+
+      if (index === 1) {
+        return metadata(function meta (_, info) {
+          error.line = info.line
+          error.place = info.place
+          error.column = info.column
+          error.filename = info.filename
+        })(line)
+      }
+
+      return line
+    })
+
+    if (opts.showStack) {
+      error.stack = opts.cleanStack ? stack : error.stack
+      error.stack = opts.shortStack
+        ? error.stack.split('\n').splice(0, 4).join('\n')
+        : error.stack
+    } else {
+      error.stack = '' // or delete error.stack?
     }
   }
-  return err
-}
 
-function cameFrom (mod) {
-  // rare cases
-  /* istanbul ignore next */
-  if (mod && mod.parent) {
-    return cameFrom(mod.parent)
-  }
-  return mod && mod.filename || ''
+  return error
 }

@@ -1,45 +1,82 @@
 {
   "name": "stacktrace-metadata",
   "version": "1.0.1",
-  "description": "Modify given `err` object to be more useful. Adds `line`, `column` and `filename` properties.",
+  "description": "Modify given `err` object to be more useful - adds `line`, `column` and `filename` properties and also cleans stack traces.",
   "repository": "tunnckoCore/stacktrace-metadata",
-  "author": "Charlike Mike Reagent <@tunnckoCore> (http://www.tunnckocore.tk)",
+  "author": "Charlike Mike Reagent <@tunnckoCore> (https://i.am.charlike.online)",
   "precommit.silent": true,
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "standard && node test.js"
+    "lint": "standard index.js test.js --fix --verbose",
+    "test": "npm-run-all -s lint test:*",
+    "test:api": "nyc --reporter lcov node test.js",
+    "test:report": "nyc report",
+    "prerelease": "npm test",
+    "release": "standard-version --sign --no-verify",
+    "git": "npm-run-all -s git:*",
+    "git:add": "git add --all",
+    "git:cz": "git-cz",
+    "commit": "npm-run-all -s test git"
   },
   "dependencies": {
-    "is-typeof-error": "^1.1.0"
+    "clean-stacktrace": "^1.1.0",
+    "clean-stacktrace-metadata": "^1.0.1",
+    "clean-stacktrace-relative-paths": "^1.0.0",
+    "extend-shallow": "^2.0.1"
   },
   "devDependencies": {
-    "assertit": "^0.1.0",
-    "pre-commit": "*"
+    "commitizen": "~2.7.0",
+    "cz-conventional-changelog": "1.1.5",
+    "mukla": "^0.4.8",
+    "npm-run-all": "~3.1.2",
+    "nyc": "^10.1.2",
+    "pre-commit": "^1.2.2",
+    "standard": "^9.0.0",
+    "standard-version": "^4.0.0"
   },
   "files": [
     "index.js"
   ],
-  "keywords": [
-    "assert",
-    "check",
-    "column",
-    "data",
-    "err",
-    "error",
-    "errors",
-    "file",
-    "filename",
-    "kind",
-    "kindof",
-    "line",
-    "meta",
-    "metadata",
-    "stack",
-    "stacktrace",
-    "stacktrace-metadata",
-    "type",
-    "typeof",
-    "useful"
-  ]
+  "keywords": [],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "verb": {
+    "run": true,
+    "toc": {
+      "render": true,
+      "method": "preWrite",
+      "maxdepth": 3
+    },
+    "layout": "empty",
+    "tasks": [
+      "readme"
+    ],
+    "related": {
+      "list": [
+        "dush",
+        "clean-stack",
+        "clean-stacktrace",
+        "clean-stacktrace-metadata",
+        "clean-stacktrace-relative-paths",
+        "assert-kindof",
+        "abbrev-kindof",
+        "is-kindof"
+      ],
+      "highlight": "clean-stacktrace"
+    },
+    "lint": {
+      "reflinks": true
+    }
+  },
+  "nyc": {
+    "check-coverage": true,
+    "statements": 100,
+    "functions": 100,
+    "branches": 100,
+    "lines": 100
+  }
 }
