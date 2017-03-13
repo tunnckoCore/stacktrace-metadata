@@ -93,7 +93,17 @@
     },
     "lint": {
       "reflinks": true
-    }
+    },
+    "reflinks": [
+      "charlike",
+      "clean-stacktrace",
+      "commitizen",
+      "is-kindof",
+      "kind-of",
+      "standard-version",
+      "verb",
+      "verb-generate-readme"
+    ]
   },
   "nyc": {
     "check-coverage": true,
