@@ -25,37 +25,39 @@ module.exports = function stacktraceMetadata (error, options) {
       relativePaths: true
     }, options)
 
-    var relativePaths = opts.relativePaths
-      ? relative(opts.cwd)
-      : function (line) { return line }
-
-    var stack = clean(error.stack, function mapper (line, index) {
-      // hint: use `parent-module` package
-      // and `line.indexOf(parentModule())`
-      // if not works correctly
-
-      line = relativePaths(line)
-
-      if (index === 1) {
-        return metadata(function meta (_, info) {
-          error.line = info.line
-          error.place = info.place
-          error.column = info.column
-          error.filename = info.filename
-        })(line)
-      }
-
-      return line
-    })
-
-    if (opts.showStack) {
-      error.stack = opts.cleanStack ? stack : error.stack
-      error.stack = opts.shortStack
-        ? error.stack.split('\n').splice(0, 4).join('\n')
-        : error.stack
-    } else {
-      error.stack = '' // or delete error.stack?
+    if (!opts.showStack) {
+      error.stack = ''
+      return error
     }
+
+    if (opts.cleanStack) {
+      var relativePaths = opts.relativePaths
+        ? relative(opts.cwd)
+        : function (line) { return line }
+
+      error.stack = clean(error.stack, function mapper (line, index) {
+        // hint: use `parent-module` package
+        // and `line.indexOf(parentModule())`
+        // if not works correctly
+
+        line = relativePaths(line)
+
+        if (index === 1) {
+          return metadata(function meta (_, info) {
+            error.line = info.line
+            error.place = info.place
+            error.column = info.column
+            error.filename = info.filename
+          })(line)
+        }
+
+        return line
+      })
+    }
+
+    error.stack = opts.shortStack
+      ? error.stack.split('\n').splice(0, 4).join('\n')
+      : error.stack
   }
 
   return error
