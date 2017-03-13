@@ -102,7 +102,9 @@
       "kind-of",
       "standard-version",
       "verb",
-      "verb-generate-readme"
+      "verb-generate-readme",
+      "clean-stacktrace-metadata",
+      "clean-stacktrace-relative-paths"
     ]
   },
   "nyc": {
