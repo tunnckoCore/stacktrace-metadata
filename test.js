@@ -43,6 +43,9 @@ test('should have relative paths by default', function (done) {
 
   test.strictEqual(e.message, 'opts.relativePaths: true')
   test.strictEqual(e.stack.indexOf('(test.js:41') > 0, true)
+  test.ok(e.line)
+  test.ok(e.column)
+  test.ok(e.filename)
   done()
 })
 
@@ -54,6 +57,9 @@ test('should have absolute paths if opts.relativePaths: false', function (done) 
 
   test.strictEqual(e.message, 'foo qux bar')
   test.strictEqual(e.stack.indexOf('(test.js:') === -1, true)
+  test.strictEqual(e.line, 53)
+  test.ok(e.column)
+  test.ok(e.filename)
   done()
 })
 
@@ -61,7 +67,7 @@ test('should clean stack by default', function (done) {
   var error = new TypeError('woohooo')
   var stack = [
     'Error: woohooo',
-    '    at Function.<anonymous> (/home/charlike/apps/stacktrace-metadata/test.js:16:13)',
+    '    at Function.<anonymous> (/home/charlike/apps/stacktrace-metadata/test.js:111:33)',
     '    at Function.tryCatch (/home/charlike/apps/node_modules/try-catch-callback/index.js:75:14)',
     '    at Function.tryCatchCallback (/home/charlike/apps/node_modules/try-catch-callback/index.js:58:21)',
     '    at Function.tryCatch (/home/charlike/apps/node_modules/always-done/node_modules/try-catch-core/index.js:80:26)',
@@ -84,6 +90,9 @@ test('should clean stack by default', function (done) {
 
   // should new stack be shorter than the old one
   test.strictEqual(e.stack.split('\n').length < stack.length, true)
+  test.strictEqual(e.line, 111)
+  test.strictEqual(e.column, 33)
+  test.ok(e.filename)
   done()
 })
 
@@ -97,6 +106,9 @@ test('should not clean stack if opts.cleanStack: false', function (done) {
 
   var internals = e.stack.indexOf('at Module._compile') > 0
   test.strictEqual(internals, true)
+  test.strictEqual(e.line, 100)
+  test.ok(e.column)
+  test.ok(e.filename)
   done()
 })
 
@@ -114,7 +126,7 @@ test('should have props like `err.line`, `err.filename` and `err.column`', funct
 
   test.strictEqual(e.name, 'Error')
   test.strictEqual(e.message, 'my special error')
-  test.strictEqual(e.line, 112)
+  test.strictEqual(e.line, 124)
   test.strictEqual(e.column, 13)
   test.strictEqual(e.place, 'Function.myQuxTest')
   test.strictEqual(e.filename, 'test.js')
