@@ -33,7 +33,7 @@ test('should return the same error', function firstTest (done) {
   test.strictEqual(err.message, e.message)
   test.strictEqual(err.message, e.message)
   test.strictEqual(e.line, 26)
-  test.strictEqual(e.column, 13)
+  test.ok(e.column)
   test.strictEqual(e.filename, 'test.js')
   test.strictEqual(e.place, 'Function.firstTest')
   done()
@@ -44,11 +44,11 @@ test('should have relative paths by default', function (done) {
   var e = stacktraceMetadata(err)
 
   test.strictEqual(e.message, 'opts.relativePaths: true')
-  test.strictEqual(e.stack.indexOf('(test.js:43') > 0, true)
+  test.strictEqual(e.stack.indexOf('(test.js:43:13') > 0, true)
   test.strictEqual(e.line, 43)
-  test.strictEqual(e.column, 13)
   test.strictEqual(e.filename, 'test.js')
   test.ok(e.at)
+  test.ok(e.column)
   done()
 })
 
@@ -95,12 +95,12 @@ test('should clean stack by default', function (done) {
 
   // should new stack be shorter than the old one
   test.strictEqual(e.stack.split('\n').length < stack.length, true)
-  test.strictEqual(e.line, 111)
-  test.strictEqual(e.column, 33)
+  test.ok(e.line)
   test.strictEqual(e.place, 'Function.xyz')
   test.strictEqual(/Function\.xyz/.test(e.at), true)
   test.strictEqual(/test\.js:111:33/.test(e.at), true)
   test.strictEqual(e.filename, 'test.js')
+  test.ok(e.column)
   done()
 })
 
@@ -115,11 +115,11 @@ test('should not clean stack if opts.cleanStack: false', function bazzyTest (don
   var internals = e.stack.indexOf('at Module._compile') > 0
   test.strictEqual(internals, true)
   test.strictEqual(e.line, 108)
-  test.strictEqual(e.column, 13)
   test.strictEqual(e.filename, 'test.js')
   test.strictEqual(e.place, 'Function.bazzyTest')
   test.strictEqual(/Function\.bazzyTest/.test(e.at), true)
   test.strictEqual(/test\.js:108:13/.test(e.at), true)
+  test.ok(e.column)
   done()
 })
 
@@ -130,10 +130,10 @@ test('should have empty string err.stack property if opts.showStack: false', fun
 
   test.strictEqual(err.stack, '')
   test.strictEqual(err.line, 127)
-  test.strictEqual(err.column, 32)
   test.strictEqual(err.place, 'Function.emptyStack')
+  test.strictEqual(/test\.js:127:32/.test(err.at), true)
   test.ok(err.filename)
-  test.ok(err.at)
+  test.ok(err.column)
   done()
 })
 
@@ -144,11 +144,11 @@ test('should have props like `err.line`, `err.filename` and `err.column`', funct
   test.strictEqual(e.name, 'Error')
   test.strictEqual(e.message, 'my special error')
   test.strictEqual(e.line, 141)
-  test.strictEqual(e.column, 13)
   test.strictEqual(e.place, 'Function.myQuxTest')
   test.strictEqual(e.filename, 'test.js')
   test.strictEqual(/Function\.myQuxTest/.test(e.at), true)
   test.strictEqual(/test\.js:141:13/.test(e.at), true)
+  test.ok(err.column)
   done()
 })
 
@@ -178,11 +178,11 @@ test('should work for errors thrown like what rimraf.sync throws', function quxi
     })
 
     test.strictEqual(e.line, 174)
-    test.strictEqual(e.column, 12)
     test.strictEqual(e.place, 'Function.quxieTest')
     test.strictEqual(e.filename, 'test.js')
     test.strictEqual(/Function\.quxieTest/.test(e.at), true)
     test.strictEqual(/test\.js:174:12/.test(e.at), true)
+    test.ok(err.column)
   }
   done()
 })
@@ -197,5 +197,10 @@ test('should be able to pass custom opts.mapper function', function (done) {
   })
 
   test.strictEqual(e.stack.trim().length > 0, true)
+  test.ok(e.at)
+  test.ok(e.line)
+  test.ok(e.place)
+  test.ok(e.column)
+  test.ok(e.filename)
   done()
 })
