@@ -15,7 +15,7 @@ var relative = require('clean-stacktrace-relative-paths')
 
 /**
  * > Cleans stack trace and attaches few more metadata properties,
- * such as `line`, `column`, `filename` and `place`. By default
+ * such as `at`, `line`, `column`, `filename` and `place`. By default
  * it cleans stack, makes is short (4 length) and makes paths relative.
  * But all this is controllable through `options` object.
  * Throws `TypeError` if `error` is not an instance of Error.
@@ -43,6 +43,7 @@ var relative = require('clean-stacktrace-relative-paths')
  * console.log(err.column) // => 10
  * console.log(err.filename) // => 'alwa.js'
  * console.log(err.place) // => 'zazz'
+ * console.log(err.at) // => 'zazz (alwa.js:8:10)'
  * console.log(err.stack)
  * // =>
  * // Error: foo quxie
