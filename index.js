@@ -8,6 +8,7 @@
 'use strict'
 
 var extend = require('extend-shallow')
+var findCallsite = require('find-callsite')
 var clean = require('clean-stacktrace')
 var metadata = require('clean-stacktrace-metadata')
 var relative = require('clean-stacktrace-relative-paths')
@@ -76,28 +77,29 @@ module.exports = function stacktraceMetadata (error, options) {
       relativePaths: true
     }, options)
 
-    var relativePaths = opts.relativePaths
-      ? relative(opts.cwd)
-      : function (line) { return line }
+    var at = findCallsite(error)
+    at = opts.relativePaths ? relative(opts.cwd)(at) : at
 
-    var stack = clean(error.stack, function mapper (line, index) {
-      // hint: use `parent-module` package
-      // and `line.indexOf(parentModule())`
-      // if not works correctly
+    metadata(function (_, info) {
+      error.at = [
+        info.place,
+        ' (',
+        info.filename,
+        ':',
+        info.line,
+        ':',
+        info.column,
+        ')'
+      ].join('')
 
-      line = relativePaths(line)
+      error.line = info.line
+      error.place = info.place
+      error.column = info.column
+      error.filename = info.filename
+    })(at)
 
-      if (index === 1) {
-        return metadata(function meta (_, info) {
-          error.line = info.line
-          error.place = info.place
-          error.column = info.column
-          error.filename = info.filename
-        })(line)
-      }
-
-      return line
-    })
+    var mapper = opts.relativePaths ? relative(opts.cwd) : null
+    var stack = clean(error.stack, mapper)
 
     if (opts.showStack) {
       error.stack = opts.cleanStack ? stack : error.stack
