@@ -173,7 +173,9 @@ test('should work for errors thrown like what rimraf.sync throws', function quxi
   try {
     rimraf.sync(12345)
   } catch (err) {
-    var e = stacktraceMetadata(err)
+    var e = stacktraceMetadata(err, {
+      mapper: function () {}
+    })
 
     test.strictEqual(e.line, 174)
     test.strictEqual(e.column, 12)
@@ -182,5 +184,18 @@ test('should work for errors thrown like what rimraf.sync throws', function quxi
     test.strictEqual(/Function\.quxieTest/.test(e.at), true)
     test.strictEqual(/test\.js:174:12/.test(e.at), true)
   }
+  done()
+})
+
+test('should be able to pass custom opts.mapper function', function (done) {
+  var err = new Error('custom mapper')
+  var e = stacktraceMetadata(err, {
+    mapper: function (line) {
+      test.strictEqual(typeof line, 'string')
+      return line
+    }
+  })
+
+  test.strictEqual(e.stack.trim().length > 0, true)
   done()
 })

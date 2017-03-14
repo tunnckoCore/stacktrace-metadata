@@ -11,7 +11,7 @@ var extend = require('extend-shallow')
 var findCallsite = require('find-callsite')
 var clean = require('clean-stacktrace')
 var metadata = require('clean-stacktrace-metadata')
-var relative = require('clean-stacktrace-relative-paths')
+var relativePaths = require('clean-stacktrace-relative-paths')
 
 /**
  * > Cleans stack trace and attaches few more metadata properties,
@@ -59,6 +59,7 @@ var relative = require('clean-stacktrace-relative-paths')
  * @param  {Boolean} `options.shortStack` if `false` full stack traces, otherwise they are just four
  * @param  {Boolean} `options.showStack` if `false` the error.stack will be empty string
  * @param  {Boolean} `options.relativePaths` if `false` paths in stack traces will be absolute
+ * @param  {Function} `options.mapper` called on each line of the stack with `(line, index)` signature
  * @param  {String} `options.cwd` current working directory, default `process.cwd()`
  * @return {Error} same error object, but modified
  * @throws {TypeError} If `error` not instance of Error
@@ -78,8 +79,10 @@ module.exports = function stacktraceMetadata (error, options) {
       relativePaths: true
     }, options)
 
-    var at = findCallsite(error)
-    at = opts.relativePaths ? relative(opts.cwd)(at) : at
+    var relative = function relative (val) {
+      return opts.relativePaths ? relativePaths(opts.cwd)(val) : val
+    }
+    var at = relative(findCallsite(error))
 
     metadata(function (_, info) {
       error.at = [
@@ -99,8 +102,13 @@ module.exports = function stacktraceMetadata (error, options) {
       error.filename = info.filename
     })(at)
 
-    var mapper = opts.relativePaths ? relative(opts.cwd) : null
-    var stack = clean(error.stack, mapper)
+    var stack = clean(error.stack, function mapper (line, index) {
+      line = typeof opts.mapper === 'function'
+        ? (opts.mapper(line, index) || line)
+        : line
+      line = relative(line)
+      return line
+    })
 
     if (opts.showStack) {
       error.stack = opts.cleanStack ? stack : error.stack

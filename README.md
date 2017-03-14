@@ -60,7 +60,7 @@ const stacktraceMetadata = require('stacktrace-metadata')
 
 ## API
 
-### [stacktraceMetadata](index.js#L68)
+### [stacktraceMetadata](index.js#L69)
 > Cleans stack trace and attaches few more metadata properties, such as `at`, `line`, `column`, `filename` and `place`. By default it cleans stack, makes is short (4 length) and makes paths relative. But all this is controllable through `options` object. Throws `TypeError` if `error` is not an instance of Error.
 
 **Params**
@@ -71,6 +71,7 @@ const stacktraceMetadata = require('stacktrace-metadata')
 * `options.shortStack` **{Boolean}**: if `false` full stack traces, otherwise they are just four    
 * `options.showStack` **{Boolean}**: if `false` the error.stack will be empty string    
 * `options.relativePaths` **{Boolean}**: if `false` paths in stack traces will be absolute    
+* `options.mapper` **{Function}**: called on each line of the stack with `(line, index)` signature    
 * `options.cwd` **{String}**: current working directory, default `process.cwd()`    
 * `returns` **{Error}**: same error object, but modified  
 
