@@ -116,7 +116,11 @@ test('should have empty string err.stack property if opts.showStack: false', fun
   var err = stacktraceMetadata(new Error('abc'), {
     showStack: false
   })
+
   test.strictEqual(err.stack, '')
+  test.ok(err.line)
+  test.ok(err.column)
+  test.ok(err.filename)
   done()
 })
 
@@ -126,7 +130,7 @@ test('should have props like `err.line`, `err.filename` and `err.column`', funct
 
   test.strictEqual(e.name, 'Error')
   test.strictEqual(e.message, 'my special error')
-  test.strictEqual(e.line, 124)
+  test.strictEqual(e.line, 128)
   test.strictEqual(e.column, 13)
   test.strictEqual(e.place, 'Function.myQuxTest')
   test.strictEqual(e.filename, 'test.js')
