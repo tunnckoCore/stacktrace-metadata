@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/tunnckocore/stacktrace-metadata/compare/v2.0.0...v2.0.1) (2017-03-15)
+
+
+### Bug Fixes
+
+* **ci:** fix tests for CI ([ad7cd78](https://github.com/tunnckocore/stacktrace-metadata/commit/ad7cd78))
+* **detection:** fix bug in detecting the startStackFunction correctly ([e5e3b34](https://github.com/tunnckocore/stacktrace-metadata/commit/e5e3b34)), closes [#5](https://github.com/tunnckocore/stacktrace-metadata/issues/5)
+* **options:** introduce custom opts.mapper function ([66bb5f5](https://github.com/tunnckocore/stacktrace-metadata/commit/66bb5f5)), closes [#3](https://github.com/tunnckocore/stacktrace-metadata/issues/3)
+* **package:** update deps ([701e786](https://github.com/tunnckocore/stacktrace-metadata/commit/701e786))
+* **tests:** improve test ([a03c703](https://github.com/tunnckocore/stacktrace-metadata/commit/a03c703)), closes [#4](https://github.com/tunnckocore/stacktrace-metadata/issues/4)
+* **tests:** update tests to not fail on CI cov ([8413c8c](https://github.com/tunnckocore/stacktrace-metadata/commit/8413c8c))
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/tunnckocore/stacktrace-metadata/compare/v1.0.1...v2.0.0) (2017-03-13)
 
