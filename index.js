@@ -82,7 +82,20 @@ module.exports = function stacktraceMetadata (error, options) {
     var relative = function relative (val) {
       return opts.relativePaths ? relativePaths(opts.cwd)(val) : val
     }
-    var at = relative(findCallsite(error))
+
+    var stack = clean(error.stack, function mapper (line, index) {
+      line = typeof opts.mapper === 'function'
+        ? (opts.mapper(line, index) || line)
+        : line
+      line = relative(line)
+      return line
+    })
+
+    if (!opts.cleanStack) {
+      stack = error.stack
+    }
+
+    var at = findCallsite(stack, opts)
 
     metadata(function (_, info) {
       error.at = [
@@ -102,22 +115,12 @@ module.exports = function stacktraceMetadata (error, options) {
       error.filename = info.filename
     })(at)
 
-    var stack = clean(error.stack, function mapper (line, index) {
-      line = typeof opts.mapper === 'function'
-        ? (opts.mapper(line, index) || line)
-        : line
-      line = relative(line)
-      return line
-    })
+    stack = opts.shortStack
+      ? stack.split('\n').splice(0, 4).join('\n')
+      : stack
 
-    if (opts.showStack) {
-      error.stack = opts.cleanStack ? stack : error.stack
-      error.stack = opts.shortStack
-        ? error.stack.split('\n').splice(0, 4).join('\n')
-        : error.stack
-    } else {
-      error.stack = '' // or delete error.stack?
-    }
+    error.stack = opts.showStack ? stack : ''
+    return error
   }
 
   return error

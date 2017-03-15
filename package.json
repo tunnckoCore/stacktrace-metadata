@@ -22,9 +22,9 @@
   "dependencies": {
     "clean-stacktrace": "^1.1.0",
     "clean-stacktrace-metadata": "^1.0.2",
-    "clean-stacktrace-relative-paths": "^1.0.0",
+    "clean-stacktrace-relative-paths": "^1.0.2",
     "extend-shallow": "^2.0.1",
-    "find-callsite": "^1.0.0"
+    "find-callsite": "^1.1.2"
   },
   "devDependencies": {
     "commitizen": "~2.7.0",
