@@ -96,24 +96,7 @@ module.exports = function stacktraceMetadata (error, options) {
     }
 
     var at = findCallsite(stack, opts)
-
-    metadata(function (_, info) {
-      error.at = [
-        info.place,
-        ' (',
-        info.filename,
-        ':',
-        info.line,
-        ':',
-        info.column,
-        ')'
-      ].join('')
-
-      error.line = info.line
-      error.place = info.place
-      error.column = info.column
-      error.filename = info.filename
-    })(at)
+    metadata(mapdata(error))(at)
 
     stack = opts.shortStack
       ? stack.split('\n').splice(0, 4).join('\n')
@@ -124,4 +107,29 @@ module.exports = function stacktraceMetadata (error, options) {
   }
 
   return error
+}
+
+function mapdata (error) {
+  return function mapper (_, info) {
+    var atLine = info.place.length ? [
+      info.place,
+      ' ('
+    ] : []
+
+    atLine = atLine.concat([
+      info.filename,
+      ':',
+      info.line,
+      ':',
+      info.column
+    ])
+
+    atLine = info.place.length ? atLine.concat(')') : atLine
+    error.at = atLine.join('')
+
+    error.line = info.line
+    error.place = info.place
+    error.column = info.column
+    error.filename = info.filename
+  }
 }

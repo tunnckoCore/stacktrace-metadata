@@ -35,7 +35,7 @@ test('should return the same error', function firstTest (done) {
   test.strictEqual(e.line, 26)
   test.ok(e.column)
   test.strictEqual(e.filename, 'test.js')
-  test.strictEqual(e.place, 'Function.firstTest')
+  test.strictEqual(e.place, 'Object.firstTest')
   done()
 })
 
@@ -72,12 +72,12 @@ test('should clean stack by default', function (done) {
   var error = new TypeError('woohooo')
   var stack = [
     'Error: woohooo',
-    '    at Function.xyz (/home/charlike/apps/stacktrace-metadata/test.js:111:33)',
-    '    at Function.tryCatch (/home/charlike/apps/node_modules/try-catch-callback/index.js:75:14)',
-    '    at Function.tryCatchCallback (/home/charlike/apps/node_modules/try-catch-callback/index.js:58:21)',
-    '    at Function.tryCatch (/home/charlike/apps/node_modules/always-done/node_modules/try-catch-core/index.js:80:26)',
-    '    at Function.tryCatchCore (/home/charlike/apps/node_modules/always-done/node_modules/try-catch-core/index.js:64:12)',
-    '    at Function.alwaysDone (/home/charlike/apps/node_modules/always-done/index.js:61:24)',
+    '    at Object.xyz (/home/charlike/apps/stacktrace-metadata/test.js:111:33)',
+    '    at Object.tryCatch (/home/charlike/apps/node_modules/try-catch-callback/index.js:75:14)',
+    '    at Object.tryCatchCallback (/home/charlike/apps/node_modules/try-catch-callback/index.js:58:21)',
+    '    at Object.tryCatch (/home/charlike/apps/node_modules/always-done/node_modules/try-catch-core/index.js:80:26)',
+    '    at Object.tryCatchCore (/home/charlike/apps/node_modules/always-done/node_modules/try-catch-core/index.js:64:12)',
+    '    at Object.alwaysDone (/home/charlike/apps/node_modules/always-done/index.js:61:24)',
     '    at mukla (/home/charlike/apps/node_modules/mukla/index.js:55:9)',
     '    at Object.<anonymous> (/home/charlike/apps/stacktrace-metadata/zazzy.js:15:1)',
     '    at Module._compile (module.js:571:32)',
@@ -96,8 +96,8 @@ test('should clean stack by default', function (done) {
   // should new stack be shorter than the old one
   test.strictEqual(e.stack.split('\n').length < stack.length, true)
   test.ok(e.line)
-  test.strictEqual(e.place, 'Function.xyz')
-  test.strictEqual(/Function\.xyz/.test(e.at), true)
+  test.strictEqual(e.place, 'Object.xyz')
+  test.strictEqual(/Object\.xyz/.test(e.at), true)
   test.strictEqual(/test\.js:111:33/.test(e.at), true)
   test.ok(e.filename)
   test.ok(e.column)
@@ -116,8 +116,8 @@ test('should not clean stack if opts.cleanStack: false', function bazzyTest (don
   test.strictEqual(internals, true)
   test.strictEqual(e.line, 108)
   test.ok(e.filename)
-  test.strictEqual(e.place, 'Function.bazzyTest')
-  test.strictEqual(/Function\.bazzyTest/.test(e.at), true)
+  test.strictEqual(e.place, 'Object.bazzyTest')
+  test.strictEqual(/Object\.bazzyTest/.test(e.at), true)
   test.strictEqual(/test\.js:108:13/.test(e.at), true)
   test.ok(e.column)
   done()
@@ -130,7 +130,7 @@ test('should have empty string err.stack property if opts.showStack: false', fun
 
   test.strictEqual(err.stack, '')
   test.strictEqual(err.line, 127)
-  test.strictEqual(err.place, 'Function.emptyStack')
+  test.strictEqual(err.place, 'Object.emptyStack')
   test.strictEqual(/test\.js:127:32/.test(err.at), true)
   test.ok(err.filename)
   test.ok(err.column)
@@ -144,9 +144,9 @@ test('should have props like `err.line`, `err.filename` and `err.column`', funct
   test.strictEqual(e.name, 'Error')
   test.strictEqual(e.message, 'my special error')
   test.strictEqual(e.line, 141)
-  test.strictEqual(e.place, 'Function.myQuxTest')
+  test.strictEqual(e.place, 'Object.myQuxTest')
   test.ok(e.filename)
-  test.strictEqual(/Function\.myQuxTest/.test(e.at), true)
+  test.strictEqual(/Object\.myQuxTest/.test(e.at), true)
   test.strictEqual(/test\.js:141:13/.test(e.at), true)
   test.ok(err.column)
   done()
@@ -178,9 +178,9 @@ test('should work for errors thrown like what rimraf.sync throws', function quxi
     })
 
     test.strictEqual(e.line, 174)
-    test.strictEqual(e.place, 'Function.quxieTest')
+    test.strictEqual(e.place, 'Object.quxieTest')
     test.ok(e.filename)
-    test.strictEqual(/Function\.quxieTest/.test(e.at), true)
+    test.strictEqual(/Object\.quxieTest/.test(e.at), true)
     test.strictEqual(/test\.js:174:12/.test(e.at), true)
     test.ok(err.column)
   }
@@ -202,5 +202,20 @@ test('should be able to pass custom opts.mapper function', function (done) {
   test.ok(e.place)
   test.ok(e.column)
   test.ok(e.filename)
+  done()
+})
+
+test('should work for stack that dont have "place" at some lines', function (done) {
+  var msg = 'no place just filename, line and column'
+  var err = new Error(msg)
+  err.stack = [
+    'Error: no place just filename, line and column',
+    '    at /home/foo/bar.js:331:7'
+  ].join('\n')
+
+  var error = stacktraceMetadata(err, {
+    relativePaths: false
+  })
+  test.strictEqual(error.place, '')
   done()
 })
