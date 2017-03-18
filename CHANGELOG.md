@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.2"></a>
+## [2.0.2](https://github.com/tunnckoCore/stacktrace-metadata/compare/v2.0.1...v2.0.2) (2017-03-18)
+
+
+### Bug Fixes
+
+* **deps:** update deps ([b71f81e](https://github.com/tunnckoCore/stacktrace-metadata/commit/b71f81e))
+* **package:** update deps and better metadata mapper ([00502c5](https://github.com/tunnckoCore/stacktrace-metadata/commit/00502c5))
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/tunnckocore/stacktrace-metadata/compare/v2.0.0...v2.0.1) (2017-03-15)
 
