@@ -213,9 +213,7 @@ test('should work for stack that dont have "place" at some lines', function (don
     '    at /home/foo/bar.js:331:7'
   ].join('\n')
 
-  var error = stacktraceMetadata(err, {
-    relativePaths: false
-  })
+  var error = stacktraceMetadata(err)
   test.strictEqual(error.place, '')
   done()
 })
