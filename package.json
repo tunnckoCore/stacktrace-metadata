@@ -1,6 +1,6 @@
 {
   "name": "stacktrace-metadata",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Modify given `err` object to be more useful - adds `at`, `line`, `column`, `place` and `filename` properties and also cleans stack traces.",
   "repository": "tunnckoCore/stacktrace-metadata",
   "author": "Charlike Mike Reagent <@tunnckoCore> (https://i.am.charlike.online)",
