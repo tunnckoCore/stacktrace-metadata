@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "clean-stacktrace": "^1.1.0",
-    "clean-stacktrace-metadata": "^1.0.4",
+    "clean-stacktrace-metadata": "^1.0.5",
     "clean-stacktrace-relative-paths": "^1.0.3",
     "extend-shallow": "^2.0.1",
     "find-callsite": "^1.1.3"
