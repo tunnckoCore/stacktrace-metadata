@@ -338,9 +338,13 @@ circular-json@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.3.1.tgz#be8b36aefccde8b3ca7aa2d6afc07a37242c0d2d"
 
-clean-stacktrace-metadata@^1.0.4, clean-stacktrace-metadata@^1.0.5:
+clean-stacktrace-metadata@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/clean-stacktrace-metadata/-/clean-stacktrace-metadata-1.0.5.tgz#cb4ed6eb39f7eb3dbab72652793a2db5394b97b7"
+
+clean-stacktrace-metadata@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/clean-stacktrace-metadata/-/clean-stacktrace-metadata-1.0.6.tgz#e0fc7b59be42820ba39c46b45280bb445b412a96"
 
 clean-stacktrace-relative-paths@^1.0.3:
   version "1.0.4"
